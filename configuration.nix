@@ -172,6 +172,7 @@
     git
     wget
     iftop
+    gnumake
     # pkgs.microsoft-edge
     pkgs.google-chrome
     # pkgs.wechat
