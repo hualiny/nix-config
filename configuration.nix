@@ -16,6 +16,11 @@
 
   # Use latest kernel.
   boot.kernelPackages = pkgs.linuxPackages_latest;
+
+  # 启用 Flakes 特性以及配套的船新 nix 命令行工具
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  environment.variables.EDITOR = "nvim";
+
   # pkgs.linuxPackages_6_14;
   # pkgs.linuxPackages_6_14.nvidia_x11;
 
@@ -53,6 +58,7 @@
       source-code-pro
       hack-font
       jetbrains-mono
+      nerd-fonts.droid-sans-mono
     ];
   };
  
