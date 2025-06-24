@@ -94,7 +94,7 @@
     type = "fcitx5";
     enable=true;
     fcitx5.plasma6Support = true;
-    fcitx5.waylandFrontend = true;
+    fcitx5.waylandFrontend = false;
     fcitx5.addons = with pkgs; [
       fcitx5-rime
       fcitx5-chinese-addons
@@ -120,7 +120,16 @@
   services = {
     desktopManager.plasma6.enable = true;
     displayManager.sddm.enable = true;
-    displayManager.sddm.wayland.enable = true;
+    displayManager.sddm.wayland.enable = false;
+    # xserver.enable = true;
+    xserver = {
+      enable = true;
+
+      xkb = {
+        layout = "us";
+        variant = "";
+      };
+    };
   };
 
   services.openssh = {
@@ -216,6 +225,10 @@
     "libwemeetwrap"
     "wemeet"
  ];
+  virtualisation.virtualbox.host.enable = true;
+  users.extraGroups.vboxusers.members = [ "user-with-access-to-virtualbox" ];
+  nixpkgs.config.allowUnfree = true;
+  virtualisation.virtualbox.host.enableExtensionPack = true;
 
 
   # Some programs need SUID wrappers, can be configured further or are
