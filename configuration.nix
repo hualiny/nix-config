@@ -153,11 +153,31 @@
   # services.libinput.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
+  programs.zsh = {
+    enable = true;
+    enableCompletion = true;
+    autosuggestions.enable = true;
+    syntaxHighlighting.enable = true;
+
+    shellAliases = {
+      ll = "ls -l";
+      update = "sudo nixos-rebuild switch";
+    };
+    histSize = 10000;
+    ohMyZsh = {
+      enable = true;
+      theme = "ys";
+      plugins = [
+        "git"
+        "z"
+      ];
+    };
+  };
   users.users.yhualin = {
     isNormalUser = true;
     extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
     home = "/home/yhualin";
-    shell = pkgs.bash;
+    shell = pkgs.zsh;
     # packages = with pkgs; [
     #   tree
     # ];
