@@ -13,6 +13,27 @@
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader = {
+    grub = {
+      enable = true;
+      devices = [
+        "nodev"
+      ];
+      efiSupport = true;
+      # useOSProber = true;
+      extraEntries = ''
+        menuentry "ArchLinux" {
+          insmod part_gpt
+          insmod fat
+          insmod search_fs_uuid
+          insmod chain
+          search --fs-uuid --set=root 4D3C-40E3
+          chainloader /EFI/GRUB/grubx64.efi
+        }
+      '';
+      version = 2;
+    };
+  };
 
   # Use latest kernel.
   boot.kernelPackages = pkgs.linuxPackages_latest;
@@ -117,10 +138,16 @@
     nvidiaSettings = true;
   };
 
+  ######### Desktop ######################
   services = {
-    desktopManager.plasma6.enable = true;
-    displayManager.sddm.enable = true;
-    displayManager.sddm.wayland.enable = false;
+    # kde
+    # desktopManager.plasma6.enable = true;
+    # displayManager.sddm.enable = true;
+    # displayManager.sddm.wayland.enable = false;
+
+    # gnome
+    udev.packages = with pkgs; [ gnome-settings-daemon ];
+
     # xserver.enable = true;
     xserver = {
       enable = true;
@@ -129,8 +156,30 @@
         layout = "us";
         variant = "";
       };
+      desktopManager.gnome.enable = true;
+      displayManager.gdm.enable = true;
+      displayManager.gdm.wayland = false;
     };
   };
+
+  environment.gnome.excludePackages = (with pkgs; [
+    atomix # puzzle game
+    cheese # webcam tool
+    epiphany # web browser
+    evince # document viewer
+    geary # email reader
+    gedit # text editor
+    gnome-characters
+    gnome-music
+    gnome-photos
+    # gnome-terminal
+    gnome-tour
+    hitori # sudoku game
+    iagno # go game
+    tali # poker game
+    totem # video player
+  ]);
+  ######### Desktop ######################
 
   services.openssh = {
     enable = true;
@@ -191,7 +240,6 @@
     #   tree
     # ];
   };
-  boot.loader.grub.device = "dev/sdb";
 
   # programs.firefox.enable = true;
 
